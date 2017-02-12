@@ -7,7 +7,7 @@
     <ProjectGuid>{5709915E-9B9D-4487-AB19-99959F1F7215}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Microsoft.Win32</RootNamespace>
+    <RootNamespace>JGCompTech.CSharp</RootNamespace>
     <AssemblyName>SharpUltimateTools</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -22,7 +22,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>true</Optimize>
+    <Optimize>false</Optimize>
     <OutputPath>bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -48,6 +48,9 @@
     <AssemblyOriginatorKeyFile>SharpUltimateTools.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup />
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />
@@ -71,36 +74,61 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Classes\CommandInfo.cs" />
-    <Compile Include="Classes\ComputerInfo.cs" />
-    <Compile Include="Classes\DBTools.cs" />
-    <Compile Include="Classes\Exceptions.cs" />
-    <Compile Include="Classes\HardwareInfo.cs" />
-    <Compile Include="Objects\OS\InstallInfoObject.cs" />
-    <Compile Include="Classes\InternalForms.cs" />
-    <Compile Include="Classes\OSInfo.cs" />
-    <Compile Include="Objects\OS\OSObject.cs" />
-    <Compile Include="Classes\OtherTools.cs" />
-    <Compile Include="Classes\ProgramInfo.cs" />
-    <Compile Include="Classes\SecurityTools.cs" />
-    <Compile Include="Objects\OS\VersionObject.cs" />
-    <Compile Include="Classes\WebTools.cs" />
-    <Compile Include="Classes\Extensions.cs" />
+    <Compile Include="Tools\CommandInfo.cs" />
+    <Compile Include="Tools\ComputerInfo.cs" />
+    <Compile Include="Tools\DateTimeHelper.cs" />
+    <Compile Include="Tools\DBTools\SQLite.cs" />
+    <Compile Include="Exceptions\CombinedException.cs" />
+    <Compile Include="Exceptions\DatabaseFileNotFoundException.cs" />
+    <Compile Include="Tools\DBTools\Database.cs" />
+    <Compile Include="Tools\HWInfo\BIOS.cs" />
+    <Compile Include="Tools\HWInfo\Network.cs" />
+    <Compile Include="Tools\HWInfo\OEM.cs" />
+    <Compile Include="Tools\HWInfo\Processor.cs" />
+    <Compile Include="Tools\HWInfo\RAM.cs" />
+    <Compile Include="Tools\HWInfo\Storage.cs" />
+    <Compile Include="Tools\ObjectConverters.cs" />
+    <Compile Include="Tools\OSInfo\Architecture.cs" />
+    <Compile Include="Tools\OSInfo\CheckIf.cs" />
+    <Compile Include="Tools\OSInfo\Edition.cs" />
+    <Compile Include="Tools\OSInfo\Enums\OSList.cs" />
+    <Compile Include="Tools\OSInfo\Enums\OtherConsts.cs" />
+    <Compile Include="Tools\OSInfo\Enums\ProductEdition.cs" />
+    <Compile Include="Tools\OSInfo\Enums\ProductType.cs" />
+    <Compile Include="Tools\OSInfo\Enums\VERSuite.cs" />
+    <Compile Include="Tools\OSInfo\NameStrings.cs" />
+    <Compile Include="Tools\OSInfo\ProductKey.cs" />
+    <Compile Include="Tools\OSInfo\ServicePack.cs" />
+    <Compile Include="Tools\OSInfo\UserInfo.cs" />
+    <Compile Include="Tools\OSInfo\Version.cs" />
+    <Compile Include="Tools\RegistryInfo.cs" />
+    <Compile Include="Tools\OSInfo\Objects\InstallInfoObject.cs" />
+    <Compile Include="Tools\InternalForms.cs" />
+    <Compile Include="Tools\OSInfo\Objects\OSObject.cs" />
+    <Compile Include="Tools\ProgramInfo.cs" />
+    <Compile Include="Tools\SecurityTools\RSAHashes.cs" />
+    <Compile Include="Tools\OSInfo\Objects\VersionObject.cs" />
+    <Compile Include="Tools\SecurityTools\CryptoRandom.cs" />
+    <Compile Include="Tools\SecurityTools\FileHashes.cs" />
+    <Compile Include="Tools\SecurityTools\PasswordHashes.cs" />
+    <Compile Include="Tools\WebTools\Json.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="NativeMethods.cs" />
-    <Compile Include="Objects\Hardware\BIOSObject.cs" />
-    <Compile Include="Objects\Hardware\DriveObject.cs" />
-    <Compile Include="Objects\Hardware\HWObject.cs" />
-    <Compile Include="Objects\Hardware\NetworkObject.cs" />
-    <Compile Include="Objects\Hardware\ProcessorObject.cs" />
-    <Compile Include="Objects\Hardware\RAMObject.cs" />
-    <Compile Include="Objects\Hardware\StorageObject.cs" />
+    <Compile Include="Tools\NativeMethods.cs" />
+    <Compile Include="Tools\HWInfo\Objects\BIOSObject.cs" />
+    <Compile Include="Tools\HWInfo\Objects\DriveObject.cs" />
+    <Compile Include="Tools\HWInfo\Objects\HWObject.cs" />
+    <Compile Include="Tools\HWInfo\Objects\NetworkObject.cs" />
+    <Compile Include="Tools\HWInfo\Objects\ProcessorObject.cs" />
+    <Compile Include="Tools\HWInfo\Objects\RAMObject.cs" />
+    <Compile Include="Tools\HWInfo\Objects\StorageObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Tools\WebTools\Html.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
