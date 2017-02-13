@@ -85,28 +85,30 @@ namespace JGCompTech.CSharp.Tools.OSInfo
             try
             {
                 var VersionString = String.Empty;
-                using (System.Management.ManagementObjectSearcher objMOS = new System.Management.ManagementObjectSearcher("SELECT * FROM  Win32_OperatingSystem"))
+                using (var objMOS = new System.Management.ManagementObjectSearcher("SELECT * FROM  Win32_OperatingSystem"))
                 {
-                    foreach (System.Management.ManagementObject o in objMOS.Get()) { VersionString = o[nameof(Version)].ToString(); }
+                    foreach (var o in objMOS.Get()) { VersionString = o[nameof(Version)].ToString(); }
                 }
 
                 var Temp = String.Empty;
-                var Major = VersionString.Substring(0, VersionString.IndexOf(".", StringComparison.CurrentCulture));
+                var IndexOfPeriod = VersionString.IndexOf(".", StringComparison.CurrentCulture);
+                var Major = VersionString.Substring(0, IndexOfPeriod);
                 Temp = VersionString.Substring(Major.Length + 1);
-                var Minor = Temp.Substring(0, VersionString.IndexOf(".", StringComparison.CurrentCulture) - 1);
+                var Minor = Temp.Substring(0, IndexOfPeriod - 1);
                 Temp = VersionString.Substring(Major.Length + 1 + Minor.Length + 1);
                 String Build;
+                String Revision;
                 if (Temp.Contains("."))
                 {
-                    Build = Temp.Substring(0, VersionString.IndexOf(".", StringComparison.CurrentCulture) - 1);
-                    Temp = VersionString.Substring(Major.Length + 1 + Minor.Length + 1 + Build.Length + 1);
+                    Build = Temp.Substring(0, IndexOfPeriod - 1);
+                    Revision = VersionString.Substring(Major.Length + 1 + Minor.Length + 1 + Build.Length + 1);
                 }
                 else
                 {
                     Build = Temp;
-                    Temp = "0";
+                    Revision = "0";
                 }
-                var Revision = Temp;
+                
 
                 var ReturnString = "0";
                 switch (type)

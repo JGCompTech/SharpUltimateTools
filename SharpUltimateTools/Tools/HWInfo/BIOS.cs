@@ -15,9 +15,9 @@ namespace JGCompTech.CSharp.Tools.HWInfo
         {
             get
             {
-                String key = "HARDWARE\\DESCRIPTION\\System\\BIOS";
-                String value = "BIOSReleaseDate";
-                return RegistryInfo.getStringValue(HKEY.LOCAL_MACHINE, key, value);
+                const String key = @"HARDWARE\DESCRIPTION\System\BIOS";
+                const String value = "BIOSReleaseDate";
+                return getStringValue(HKEY.LOCAL_MACHINE, key, value);
             }
         }
 
@@ -28,9 +28,9 @@ namespace JGCompTech.CSharp.Tools.HWInfo
         {
             get
             {
-                String key = "HARDWARE\\DESCRIPTION\\System\\BIOS";
-                String value = "BIOSVersion";
-                return RegistryInfo.getStringValue(HKEY.LOCAL_MACHINE, key, value);
+                const String key = "HARDWARE\\DESCRIPTION\\System\\BIOS";
+                const String value = "BIOSVersion";
+                return getStringValue(HKEY.LOCAL_MACHINE, key, value);
             }
         }
 
@@ -41,9 +41,9 @@ namespace JGCompTech.CSharp.Tools.HWInfo
         {
             get
             {
-                String key = "HARDWARE\\DESCRIPTION\\System\\BIOS";
-                String value = "BIOSVendor";
-                return RegistryInfo.getStringValue(HKEY.LOCAL_MACHINE, key, value);
+                const String key = "HARDWARE\\DESCRIPTION\\System\\BIOS";
+                const String value = "BIOSVendor";
+                return getStringValue(HKEY.LOCAL_MACHINE, key, value);
             }
         }
     }

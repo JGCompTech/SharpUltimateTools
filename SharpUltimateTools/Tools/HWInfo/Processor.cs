@@ -15,8 +15,8 @@ namespace JGCompTech.CSharp.Tools.HWInfo
         {
             get
             {
-                String key = "HARDWARE\\DESCRIPTION\\System\\CentralProcessor\\0";
-                String value = "ProcessorNameString";
+                const String key = "HARDWARE\\DESCRIPTION\\System\\CentralProcessor\\0";
+                const String value = "ProcessorNameString";
                 return RegistryInfo.getStringValue(HKEY.LOCAL_MACHINE, key, value);
             }
         }
@@ -24,12 +24,6 @@ namespace JGCompTech.CSharp.Tools.HWInfo
         /// <summary>
         /// Returns the number of cores available on the system processor.
         /// </summary>
-        public static int Cores
-        {
-            get
-            {
-                return Environment.ProcessorCount;
-            }
-        }
+        public static int Cores => Environment.ProcessorCount;
     }
 }

@@ -97,7 +97,7 @@ namespace JGCompTech.CSharp.Tools
                 }
 
                 // Now we create a process, assign its ProcessStartInfo and start it
-                using (System.Diagnostics.Process proc = new System.Diagnostics.Process())
+                using (var proc = new System.Diagnostics.Process())
                 {
                     proc.StartInfo = procStartInfo;
                     proc.Start();

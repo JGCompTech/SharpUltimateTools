@@ -48,52 +48,44 @@ namespace JGCompTech.CSharp.Tools
             var Hardware = new HWObject
             {
                 SystemOEM = HWInfo.OEM.Name,
-                ProductName = HWInfo.OEM.ProductName
+                ProductName = HWInfo.OEM.ProductName,
+                #region BIOS
+                BIOS = new BIOSObject
+                {
+                    Name = HWInfo.BIOS.Vendor + " " + HWInfo.BIOS.Version,
+                    ReleaseDate = HWInfo.BIOS.ReleaseDate,
+                    Vendor = HWInfo.BIOS.Vendor,
+                    Version = HWInfo.BIOS.Version
+                },
+                #endregion
+                #region Network
+                Network = new NetworkObject
+                {
+                    ConnectionStatus = HWInfo.Network.ConnectionStatus,
+                    InternalIPAddress = HWInfo.Network.InternalIPAddress
+                },
+                #endregion
+                #region Processor
+                Processor = new ProcessorObject
+                {
+                    Name = HWInfo.Processor.Name,
+                    Cores = HWInfo.Processor.Cores
+                },
+                #endregion
+                #region RAM
+                RAM = new RAMObject
+                {
+                    TotalInstalled = HWInfo.RAM.GetTotalRam
+                }
+                #endregion
             };
-
-            #region BIOS
-            var BIOS = new BIOSObject
-            {
-                Name = HWInfo.BIOS.Vendor + " " + HWInfo.BIOS.Version,
-                ReleaseDate = HWInfo.BIOS.ReleaseDate,
-                Vendor = HWInfo.BIOS.Vendor,
-                Version = HWInfo.BIOS.Version
-            };
-            Hardware.BIOS = BIOS;
-            #endregion
 
             #region Network
-            var Network = new NetworkObject
-            {
-                ConnectionStatus = HWInfo.Network.ConnectionStatus,
-                InternalIPAddress = HWInfo.Network.InternalIPAddress
-            };
-
             var error = String.Empty;
             var ExternalIP = HWInfo.Network.ExternalIPAddress(out error);
 
-            if (Network.ConnectionStatus) { Network.ExternalIPAddress = ExternalIP; }
-            else { Network.ExternalIPAddress = "0.0.0.0"; }
-
-
-            Hardware.Network = Network;
-            #endregion
-
-            #region Processor
-            var Processor = new ProcessorObject
-            {
-                Name = HWInfo.Processor.Name,
-                Cores = HWInfo.Processor.Cores
-            };
-            Hardware.Processor = Processor;
-            #endregion
-
-            #region RAM
-            var RAM = new RAMObject
-            {
-                TotalInstalled = HWInfo.RAM.GetTotalRam
-            };
-            Hardware.RAM = RAM;
+            if (Hardware.Network.ConnectionStatus) { Hardware.Network.ExternalIPAddress = ExternalIP; }
+            else { Hardware.Network.ExternalIPAddress = "0.0.0.0"; }
             #endregion
 
             #region Storage
@@ -159,40 +151,34 @@ namespace JGCompTech.CSharp.Tools
         /// <returns></returns>
         public static OSObject ReinitalizeOS()
         {
-            var OS = new OSObject
+            return new OSObject
             {
                 ComputerName = OSInfo.Name.ComputerNameActive,
                 ComputerNamePending = OSInfo.Name.ComputerNamePending,
                 DomainName = OSInfo.UserInfo.CurrentDomainName,
                 LoggedInUserName = OSInfo.UserInfo.LoggedInUserName,
                 RegisteredOrganization = OSInfo.UserInfo.RegisteredOrganization,
-                RegisteredOwner = OSInfo.UserInfo.RegisteredOwner
+                RegisteredOwner = OSInfo.UserInfo.RegisteredOwner,
+                InstallInfo = new InstallInfoObject
+                {
+                    ActivationStatus = OSInfo.CheckIf.IsActivatedWMI,
+                    Architecture = OSInfo.Architecture.String,
+                    NameExpanded = OSInfo.Name.StringExpanded,
+                    Name = OSInfo.Name.String,
+                    ProductKey = OSInfo.ProductKey.Key,
+                    ServicePack = OSInfo.ServicePack.String,
+                    ServicePackNumber = OSInfo.ServicePack.Number,
+                    Version = new VersionObject
+                    {
+                        Build = OSInfo.Version.Build,
+                        Main = OSInfo.Version.Main,
+                        Major = OSInfo.Version.Major,
+                        Minor = OSInfo.Version.Minor,
+                        Number = OSInfo.Version.Number,
+                        Revision = OSInfo.Version.Revision
+                    }
+                }
             };
-
-            var InstallInfo = new InstallInfoObject
-            {
-                ActivationStatus = OSInfo.CheckIf.IsActivatedWMI,
-                Architecture = OSInfo.Architecture.String,
-                NameExpanded = OSInfo.Name.StringExpanded,
-                Name = OSInfo.Name.String,
-                ProductKey = OSInfo.ProductKey.Key,
-                ServicePack = OSInfo.ServicePack.String,
-                ServicePackNumber = OSInfo.ServicePack.Number
-            };
-
-            var Version = new VersionObject
-            {
-                Build = OSInfo.Version.Build,
-                Main = OSInfo.Version.Main,
-                Major = OSInfo.Version.Major,
-                Minor = OSInfo.Version.Minor,
-                Number = OSInfo.Version.Number,
-                Revision = OSInfo.Version.Revision
-            };
-
-            OS.InstallInfo.Version = Version;
-            OS.InstallInfo = InstallInfo;
-            return OS;
         }
     }
 }

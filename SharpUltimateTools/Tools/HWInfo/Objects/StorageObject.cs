@@ -1,5 +1,3 @@
-using System;
-
 namespace JGCompTech.CSharp.Tools.HWInfo.Objects
 {
     /// <summary>

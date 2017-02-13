@@ -1,6 +1,8 @@
 ﻿using JGCompTech.CSharp.Tools.OSInfo.Enums;
 using System;
 using System.Runtime.InteropServices;
+using static JGCompTech.CSharp.Tools.NativeMethods;
+using static JGCompTech.CSharp.Tools.OSInfo.Enums.ProductEdition;
 
 namespace JGCompTech.CSharp.Tools.OSInfo
 {
@@ -36,25 +38,29 @@ namespace JGCompTech.CSharp.Tools.OSInfo
         /// <returns></returns>
         static String GetVersion5()
         {
-            var osVersionInfo = new NativeMethods.OSVERSIONINFOEX
+            
+            var osVersionInfo = new OSVERSIONINFOEX
             {
-                dwOSVersionInfoSize = Marshal.SizeOf(typeof(NativeMethods.OSVERSIONINFOEX))
+                dwOSVersionInfoSize = Marshal.SizeOf(typeof(OSVERSIONINFOEX))
             };
-            if (!NativeMethods.GetVersionEx(ref osVersionInfo)) return String.Empty;
+            if (!GetVersionEx(ref osVersionInfo)) return String.Empty;
 
             osVersionInfo.ExceptionIfNull(nameof(osVersionInfo) + " Cannot Be Null!", nameof(osVersionInfo));
-            if (NativeMethods.GetSystemMetrics((int)OtherConsts.SMMediaCenter)) return " Media Center";
-            if (NativeMethods.GetSystemMetrics((int)OtherConsts.SMTabletPC)) return " Tablet PC";
+
+            var Mask = (VERSuite)osVersionInfo.wSuiteMask;
+
+            if (GetSystemMetrics((int)OtherConsts.SMMediaCenter)) return " Media Center";
+            if (GetSystemMetrics((int)OtherConsts.SMTabletPC)) return " Tablet PC";
             if (CheckIf.IsServer)
             {
                 if (Version.Minor == 0)
                 {
-                    if (((VERSuite)osVersionInfo.wSuiteMask & VERSuite.Datacenter) == VERSuite.Datacenter)
+                    if ((Mask & VERSuite.Datacenter) == VERSuite.Datacenter)
                     {
                         // Windows 2000 Datacenter Server
                         return " Datacenter Server";
                     }
-                    if (((VERSuite)osVersionInfo.wSuiteMask & VERSuite.Enterprise) == VERSuite.Enterprise)
+                    if ((Mask & VERSuite.Enterprise) == VERSuite.Enterprise)
                     {
                         // Windows 2000 Advanced Server
                         return " Advanced Server";
@@ -64,27 +70,27 @@ namespace JGCompTech.CSharp.Tools.OSInfo
                 }
                 if (Version.Minor == 2)
                 {
-                    if (((VERSuite)osVersionInfo.wSuiteMask & VERSuite.Datacenter) == VERSuite.Datacenter)
+                    if ((Mask & VERSuite.Datacenter) == VERSuite.Datacenter)
                     {
                         // Windows Server 2003 Datacenter Edition
                         return " Datacenter Edition";
                     }
-                    if (((VERSuite)osVersionInfo.wSuiteMask & VERSuite.Enterprise) == VERSuite.Enterprise)
+                    if ((Mask & VERSuite.Enterprise) == VERSuite.Enterprise)
                     {
                         // Windows Server 2003 Enterprise Edition
                         return " Enterprise Edition";
                     }
-                    if (((VERSuite)osVersionInfo.wSuiteMask & VERSuite.StorageServer) == VERSuite.StorageServer)
+                    if ((Mask & VERSuite.StorageServer) == VERSuite.StorageServer)
                     {
                         // Windows Server 2003 Storage Edition
                         return " Storage Edition";
                     }
-                    if (((VERSuite)osVersionInfo.wSuiteMask & VERSuite.ComputeServer) == VERSuite.ComputeServer)
+                    if ((Mask & VERSuite.ComputeServer) == VERSuite.ComputeServer)
                     {
                         // Windows Server 2003 Compute Cluster Edition
                         return " Compute Cluster Edition";
                     }
-                    if (((VERSuite)osVersionInfo.wSuiteMask & VERSuite.Blade) == VERSuite.Blade)
+                    if ((Mask & VERSuite.Blade) == VERSuite.Blade)
                     {
                         // Windows Server 2003 Web Edition
                         return " Web Edition";
@@ -95,13 +101,13 @@ namespace JGCompTech.CSharp.Tools.OSInfo
             }
             else
             {
-                if (((VERSuite)osVersionInfo.wSuiteMask & VERSuite.EmbeddedNT) == VERSuite.EmbeddedNT)
+                if ((Mask & VERSuite.EmbeddedNT) == VERSuite.EmbeddedNT)
                 {
                     //Windows XP Embedded
                     return " Embedded";
                 }
                 // Windows XP / Windows 2000 Professional
-                return ((VERSuite)osVersionInfo.wSuiteMask & VERSuite.Personal) == VERSuite.Personal ? " Home" : " Professional";
+                return (Mask & VERSuite.Personal) == VERSuite.Personal ? " Home" : " Professional";
             }
             return String.Empty;
         }
@@ -114,91 +120,93 @@ namespace JGCompTech.CSharp.Tools.OSInfo
         {
             switch ((ProductEdition)getProductInfo())
             {
-                case ProductEdition.Ultimate:
-                case ProductEdition.UltimateE:
-                case ProductEdition.UltimateN:
-                    return "Ultimate Edition";
+                case Ultimate:
+                case UltimateE:
+                case UltimateN:
+                    return nameof(Ultimate);
 
-                case ProductEdition.Professional:
-                case ProductEdition.ProfessionalE:
-                case ProductEdition.ProfessionalN:
-                    return "Professional";
+                case Professional:
+                case ProfessionalE:
+                case ProfessionalN:
+                    return nameof(Professional);
 
-                case ProductEdition.HomePremium:
-                case ProductEdition.HomePremiumE:
-                case ProductEdition.HomePremiumN:
-                    return "Home Premium Edition";
+                case HomePremium:
+                case HomePremiumE:
+                case HomePremiumN:
+                    return "Home Premium";
 
-                case ProductEdition.HomeBasic:
-                case ProductEdition.HomeBasicE:
-                case ProductEdition.HomeBasicN:
-                    return "Home Basic Edition";
+                case HomeBasic:
+                case HomeBasicE:
+                case HomeBasicN:
+                    return "Home Basic";
 
-                case ProductEdition.Enterprise:
-                case ProductEdition.EnterpriseE:
-                case ProductEdition.EnterpriseN:
-                case ProductEdition.EnterpriseServerV:
-                    return "Enterprise Edition";
+                case Enterprise:
+                case EnterpriseE:
+                case EnterpriseN:
+                case EnterpriseServerV:
+                    return nameof(Enterprise);
 
-                case ProductEdition.Business:
-                case ProductEdition.BusinessN:
-                    return "Business Edition";
+                case Business:
+                case BusinessN:
+                    return nameof(Business);
 
-                case ProductEdition.Starter:
-                case ProductEdition.StarterE:
-                case ProductEdition.StarterN:
-                    return "Starter Edition";
+                case Starter:
+                case StarterE:
+                case StarterN:
+                    return nameof(Starter);
 
-                case ProductEdition.ClusterServer:
-                    return "Cluster Server Edition";
+                case ClusterServer:
+                    return "Cluster Server";
 
-                case ProductEdition.DatacenterServer:
-                case ProductEdition.DatacenterServerV:
-                    return "Datacenter Edition";
+                case DatacenterServer:
+                case DatacenterServerV:
+                    return "Datacenter";
 
-                case ProductEdition.DatacenterServerCore:
-                case ProductEdition.DatacenterServerCoreV:
-                    return "Datacenter Edition (Core installation)";
+                case DatacenterServerCore:
+                case DatacenterServerCoreV:
+                    return "Datacenter (Core installation)";
 
-                case ProductEdition.EnterpriseServer:
-                    return "Enterprise Edition";
+                case EnterpriseServer:
+                    return nameof(Enterprise);
 
-                case ProductEdition.EnterpriseServerCore:
-                case ProductEdition.EnterpriseServerCoreV:
-                    return "Enterprise Edition (Core installation)";
+                case EnterpriseServerCore:
+                case EnterpriseServerCoreV:
+                    return "Enterprise (Core installation)";
 
-                case ProductEdition.EnterpriseServerIA64:
-                    return "Enterprise Edition For Itanium-based Systems";
+                case EnterpriseServerIA64:
+                    return "Enterprise For Itanium-based Systems";
 
-                case ProductEdition.SmallBusinessServer:
+                case SmallBusinessServer:
                     return "Small Business Server";
-                //case ProductType.SmallBusinessServerPremium:
+
+                //case SmallBusinessServerPremium:
                 //  return "Small Business Server Premium Edition";
-                case ProductEdition.ServerForSmallBusiness:
-                case ProductEdition.ServerForSmallBusinessV:
+
+                case ServerForSmallBusiness:
+                case ServerForSmallBusinessV:
                     return "Windows Essential Server Solutions";
 
-                case ProductEdition.StandardServer:
-                case ProductEdition.StandardServerV:
-                    return "Standard Edition";
+                case StandardServer:
+                case StandardServerV:
+                    return "Standard";
 
-                case ProductEdition.StandardServerCore:
-                case ProductEdition.StandardServerCoreV:
-                    return "Standard Edition (Core installation)";
+                case StandardServerCore:
+                case StandardServerCoreV:
+                    return "Standard (Core installation)";
 
-                case ProductEdition.WebServer:
-                case ProductEdition.WebServerCore:
-                    return "Web Server Edition";
+                case WebServer:
+                case WebServerCore:
+                    return "Web Server";
 
-                case ProductEdition.MediumBusinessServerManagement:
-                case ProductEdition.MediumBusinessServerMessaging:
-                case ProductEdition.MediumBusinessServerSecurity:
+                case MediumBusinessServerManagement:
+                case MediumBusinessServerMessaging:
+                case MediumBusinessServerSecurity:
                     return "Windows Essential Business Server";
 
-                case ProductEdition.StorageEnterpriseServer:
-                case ProductEdition.StorageExpressServer:
-                case ProductEdition.StorageStandardServer:
-                case ProductEdition.StorageWorkgroupServer:
+                case StorageEnterpriseServer:
+                case StorageExpressServer:
+                case StorageStandardServer:
+                case StorageWorkgroupServer:
                     return "Storage Server";
             }
             return String.Empty;
@@ -207,22 +215,19 @@ namespace JGCompTech.CSharp.Tools.OSInfo
         /// <summary>
         /// Gets the product type of the operating system running on this Computer.
         /// </summary>
-        public static Byte ProductType
+        public static byte ProductType
         {
             get
             {
-                var osVersionInfo = new NativeMethods.OSVERSIONINFOEX
+                var osVersionInfo = new OSVERSIONINFOEX
                 {
-                    dwOSVersionInfoSize = Marshal.SizeOf(typeof(NativeMethods.OSVERSIONINFOEX))
+                    dwOSVersionInfoSize = Marshal.SizeOf(typeof(OSVERSIONINFOEX))
                 };
-                if (!NativeMethods.GetVersionEx(ref osVersionInfo)) return (int)ProductEdition.Undefined;
+                if (!GetVersionEx(ref osVersionInfo)) return (int)Undefined;
                 return osVersionInfo.wProductType;
             }
         }
 
-        private static int getProductInfo()
-        {
-            return NativeMethods.getProductInfo(Version.Major, Version.Minor);
-        }
+        static int getProductInfo() => NativeMethods.getProductInfo(Version.Major, Version.Minor);
     }
 }

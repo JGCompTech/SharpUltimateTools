@@ -15,14 +15,14 @@ namespace JGCompTech.CSharp.Tools.HWInfo
         {
             get
             {
-                String key = "HARDWARE\\DESCRIPTION\\System\\BIOS";
-                String value = "SystemManufacturer";
-                String text = RegistryInfo.getStringValue(HKEY.LOCAL_MACHINE, key, value);
+                var key = @"HARDWARE\DESCRIPTION\System\BIOS";
+                var value = "SystemManufacturer";
+                var text = getStringValue(HKEY.LOCAL_MACHINE, key, value);
                 if (text.IsNullOrEmpty())
                 {
                     key = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\OEMInFormation";
                     value = "Manufacturer";
-                    return RegistryInfo.getStringValue(HKEY.LOCAL_MACHINE, key, value);
+                    return getStringValue(HKEY.LOCAL_MACHINE, key, value);
                 }
                 return text;
             }
@@ -35,14 +35,14 @@ namespace JGCompTech.CSharp.Tools.HWInfo
         {
             get
             {
-                String key = "HARDWARE\\DESCRIPTION\\System\\BIOS";
-                String value = "SystemProductName";
-                String text = RegistryInfo.getStringValue(HKEY.LOCAL_MACHINE, key, value);
+                var key = "HARDWARE\\DESCRIPTION\\System\\BIOS";
+                var value = "SystemProductName";
+                var text = getStringValue(HKEY.LOCAL_MACHINE, key, value);
                 if (text.IsNullOrEmpty())
                 {
                     key = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\OEMInFormation";
                     value = "Model";
-                    return RegistryInfo.getStringValue(HKEY.LOCAL_MACHINE, key, value);
+                    return getStringValue(HKEY.LOCAL_MACHINE, key, value);
                 }
                 return text;
             }

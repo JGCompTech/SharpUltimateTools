@@ -15,8 +15,8 @@ namespace JGCompTech.CSharp.Tools.OSInfo
         {
             get
             {
-                String key = "Software\\Microsoft\\Windows NT\\CurrentVersion";
-                String value = "RegisteredOrganization";
+                const String key = "Software\\Microsoft\\Windows NT\\CurrentVersion";
+                const String value = nameof(RegisteredOrganization);
                 return RegistryInfo.getStringValue(HKEY.LOCAL_MACHINE, key, value);
             }
         }
@@ -28,8 +28,8 @@ namespace JGCompTech.CSharp.Tools.OSInfo
         {
             get
             {
-                String key = "Software\\Microsoft\\Windows NT\\CurrentVersion";
-                String value = "RegisteredOwner";
+                const String key = "Software\\Microsoft\\Windows NT\\CurrentVersion";
+                const String value = nameof(RegisteredOwner);
                 return RegistryInfo.getStringValue(HKEY.LOCAL_MACHINE, key, value);
             }
         }

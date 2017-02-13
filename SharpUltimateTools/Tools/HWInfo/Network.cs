@@ -17,7 +17,7 @@ namespace JGCompTech.CSharp.Tools.HWInfo
                 try
                 {
                     var IP = String.Empty;
-                    foreach (System.Net.IPAddress ip in System.Net.Dns.GetHostEntry(System.Net.Dns.GetHostName()).AddressList)
+                    foreach (var ip in System.Net.Dns.GetHostEntry(System.Net.Dns.GetHostName()).AddressList)
                     {
                         if (ip.AddressFamily.ToString() == "InterNetwork") IP = ip.ToString();
                     }
@@ -41,7 +41,7 @@ namespace JGCompTech.CSharp.Tools.HWInfo
             error = String.Empty;
             try
             {
-                using (System.Net.WebClient ipclient = new System.Net.WebClient())
+                using (var ipclient = new System.Net.WebClient())
                 {
                     IP = ipclient.DownloadString("http://api.ipify.org");
                     return IP;

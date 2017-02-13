@@ -15,8 +15,11 @@ namespace JGCompTech.CSharp.Tools.WebTools
         /// <param name="url"></param>
         public static String GetHtml(String url)
         {
-            var newUri = new Uri(url);
-            return GetHtml(newUri);
+            if (url.IsNotNullOrEmpty() && url.IsValidUrl())
+            {
+                return GetHtml(new Uri(url));
+            }
+            throw new ArgumentException("URL string is invalid!");
         }
 
         /// <summary>
@@ -28,19 +31,13 @@ namespace JGCompTech.CSharp.Tools.WebTools
             try
             {
                 //Create request For given url
-                var request = (HttpWebRequest)WebRequest.Create(url);
-
-                //Create response-object
-                var response = (HttpWebResponse)request.GetResponse();
+                var response = ((HttpWebRequest)WebRequest.Create(url)).GetResponse();
 
                 //Take response stream
                 using (var sr = new StreamReader(response.GetResponseStream()))
                 {
                     //Read response stream (html code)
-                    var html = sr.ReadToEnd();
-
-                    //return source
-                    return html;
+                    return sr.ReadToEnd();
                 }
             }
             catch (Exception ex)

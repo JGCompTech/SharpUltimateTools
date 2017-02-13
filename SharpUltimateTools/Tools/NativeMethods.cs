@@ -80,7 +80,7 @@ namespace JGCompTech.CSharp.Tools
 
             public MEMORYSTATUSEX()
             {
-                dwLength = (uint)Marshal.SizeOf(typeof(NativeMethods.MEMORYSTATUSEX));
+                dwLength = (uint)Marshal.SizeOf(typeof(MEMORYSTATUSEX));
             }
         }
 
@@ -90,7 +90,7 @@ namespace JGCompTech.CSharp.Tools
 
         public static int getProductInfo(int Major, int Minor)
         {
-            int strProductType = new int();
+            var strProductType = new int();
             GetProductInfo(Major, Minor, 0, 0, out strProductType);
             return strProductType;
         }

@@ -99,17 +99,14 @@ namespace JGCompTech.CSharp.Tools.DBTools
             if (File.Exists(db.Path))
             {
                 var cs = db.ConnectionString;
-                using (SQLiteConnection con = new SQLiteConnection(cs, true))
+                using (var con = new SQLiteConnection(cs, true))
                 {
                     con.Open();
                     var sql = "SELECT * FROM " + table;
                     da = new SQLiteDataAdapter(sql, con);
-                    if (ds.Tables.Contains(table))
+                    if (ds.Tables.Contains(table) && ds.Tables[table].Rows.Count > 0)
                     {
-                        if (ds.Tables[table].Rows.Count > 0)
-                        {
-                            ds.Tables[table].Rows.Clear();
-                        }
+                        ds.Tables[table].Rows.Clear();
                     }
                     da.Fill(ds, table);
                 }
@@ -129,12 +126,12 @@ namespace JGCompTech.CSharp.Tools.DBTools
             db.ExceptionIfNull("The specified database object cannot be null!", nameof(db));
             ds.ExceptionIfNull("The specified dataset object cannot be null!", nameof(ds));
             var cs = db.ConnectionString;
-            using (SQLiteConnection con = new SQLiteConnection(cs, true))
+            using (var con = new SQLiteConnection(cs, true))
             {
                 con.Open();
                 var sql = "SELECT * FROM " + table;
                 da = new SQLiteDataAdapter(sql, con);
-                using (SQLiteCommandBuilder cb = new SQLiteCommandBuilder(da))
+                using (var cb = new SQLiteCommandBuilder(da))
                 {
                     cb.DataAdapter.Update(ds.Tables[table]);
                 }

@@ -22,7 +22,7 @@ namespace JGCompTech.CSharp.Tools
             var sb = new StringBuilder();
             const char KeySeparator = '=';
             const char PairSeparator = '&';
-            foreach (KeyValuePair<String, String> pair in dictionary)
+            foreach (var pair in dictionary)
             {
                 sb.Append(pair.Key);
                 sb.Append(KeySeparator);
@@ -39,14 +39,14 @@ namespace JGCompTech.CSharp.Tools
         /// <returns></returns>
         public static object ByteStringToObject(String bytes)
         {
-            using (MemoryStream ms = new MemoryStream())
+            using (var ms = new MemoryStream())
             {
                 const char Separator = '&';
                 var newlist = bytes.Split(Separator).ToList();
                 var ObjectToRecieve = new byte[newlist.Count];
                 long Counter = 0;
 
-                foreach (String inbyte in newlist)
+                foreach (var inbyte in newlist)
                 {
                     ObjectToRecieve[Counter] = Convert.ToByte(inbyte, CultureInfo.CurrentCulture);
                     Counter++;
@@ -55,8 +55,7 @@ namespace JGCompTech.CSharp.Tools
                 var bf = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
                 ms.Write(ObjectToRecieve, 0, ObjectToRecieve.Length);
                 ms.Seek(0, SeekOrigin.Begin);
-                var obj = bf.Deserialize(ms);
-                return obj;
+                return bf.Deserialize(ms);
             }
         }
 
@@ -68,20 +67,20 @@ namespace JGCompTech.CSharp.Tools
         public static String ObjectToByteString(object obj)
         {
             var bf = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
-            using (MemoryStream ms = new MemoryStream())
+            using (var ms = new MemoryStream())
             {
                 bf.Serialize(ms, obj);
 
                 var Output = new List<String>(1000);
                 const char Separator = '&';
 
-                foreach (Byte outbyte in ms.ToArray())
+                foreach (var outbyte in ms.ToArray())
                 {
                     Output.Add(outbyte.ToString(CultureInfo.CurrentCulture));
                 }
 
                 var sb = new StringBuilder();
-                foreach (String outbyte in Output)
+                foreach (var outbyte in Output)
                 {
                     sb.Append(outbyte);
                     sb.Append(Separator);

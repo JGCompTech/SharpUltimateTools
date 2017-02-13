@@ -17,12 +17,9 @@ namespace JGCompTech.CSharp.Tools.WebTools
         /// <returns></returns>
         public static String GetJson(String url, String CurrentToken)
         {
-            if (url.IsNotNullOrEmpty())
+            if (url.IsNotNullOrEmpty() && url.IsValidUrl())
             {
-                if (url.IsValidUrl())
-                {
-                    return GetJson(new Uri(url), CurrentToken);
-                }
+                return GetJson(new Uri(url), CurrentToken);
             }
             throw new ArgumentException("URL string is invalid!");
         }

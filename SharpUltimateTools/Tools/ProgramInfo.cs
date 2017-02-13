@@ -97,12 +97,12 @@ namespace JGCompTech.CSharp.Tools
         /// </summary>
         /// <param name="resourceName"></param>
         /// <param name="fileToExtractTo"></param>
-        public static void SaveResourceToDisk(string resourceName, string fileToExtractTo)
+        public static void SaveResourceToDisk(String resourceName, String fileToExtractTo)
         {
             var s = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName);
-            using (FileStream resourceFile = new FileStream(fileToExtractTo, FileMode.Create))
+            using (var resourceFile = new FileStream(fileToExtractTo, FileMode.Create))
             {
-                var b = new Byte[s.Length + 1];
+                var b = new byte[s.Length + 1];
                 s.Read(b, 0, Convert.ToInt32(s.Length));
                 resourceFile.Write(b, 0, Convert.ToInt32(b.Length - 1));
                 resourceFile.Flush();

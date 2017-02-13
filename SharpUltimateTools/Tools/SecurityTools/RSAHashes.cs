@@ -1,6 +1,4 @@
 ﻿using System;
-using System.IO;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -82,9 +80,7 @@ namespace JGCompTech.CSharp.Tools
                 plainBytes = rsaProvider.Decrypt(encryptedBytes, false);
             }
 
-            var plainText = Encoding.UTF8.GetString(plainBytes, 0, plainBytes.Length);
-
-            return plainText;
+            return Encoding.UTF8.GetString(plainBytes, 0, plainBytes.Length);
         }
 
         

@@ -23,12 +23,6 @@ namespace JGCompTech.CSharp
             control.Invoke(mi);
             return;
         }
-        /// <summary>
-        /// Turns any object to null
-        /// </summary>
-        /// <param name="input"></param>
-        /// <returns></returns>
-        public static object ToNull(this object input) => null;
 
         /// <summary>
         /// Turns any object into an Exception

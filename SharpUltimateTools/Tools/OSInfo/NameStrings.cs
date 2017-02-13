@@ -19,34 +19,40 @@ namespace JGCompTech.CSharp.Tools.OSInfo
             get
             {
                 var ServicePack = String.Empty;
+                var TextFormat = "{0} {1} {2} ({3} Bit)";
                 if (CheckIf.IsWin8OrLater)
                 {
                     ServicePack = " - " + Version.Build.ToString(CultureInfo.CurrentCulture);
-                    return String + " " + Edition.String + ServicePack + " (" + Architecture.Number + " Bit)";
+                    return String.Format(TextFormat, String, Edition.String, ServicePack, Architecture.Number);
                 }
                 var SPString = ServicePack;
                 ServicePack = " SP" + SPString.Substring(SPString.Length - 1);
-                return String + " " + Edition.String + ServicePack + " (" + Architecture.Number + " Bit)";
+                return String.Format(TextFormat, String, Edition.String, ServicePack, Architecture.Number);
             }
         }
 
+        /// <summary>
+        /// Return a full version String, es.: "Windows XP Service Pack 2 (32 Bit)"
+        /// </summary>
+        /// <returns>A String representing a fully displayable version</returns>
         public static String StringExpanded2
         {
             get
             {
-                String key = "Software\\\\Microsoft\\\\Windows NT\\\\CurrentVersion";
-                String value = "ProductName";
-                String name = RegistryInfo.getStringValue(HKEY.LOCAL_MACHINE, key, value);
+                var key = "Software\\\\Microsoft\\\\Windows NT\\\\CurrentVersion";
+                var value = "ProductName";
+                var name = RegistryInfo.getStringValue(HKEY.LOCAL_MACHINE, key, value);
 
                 var ServicePack = String.Empty;
+                var TextFormat = "{0} {1} ({2} Bit)";
                 if (CheckIf.IsWin8OrLater)
                 {
                     ServicePack = " - " + Version.Build.ToString(CultureInfo.CurrentCulture);
-                    return name + " " + ServicePack + " (" + Architecture.Number + " Bit)";
+                    return String.Format(TextFormat, name, ServicePack, Architecture.Number);
                 }
                 var SPString = ServicePack;
                 ServicePack = " SP" + SPString.Substring(SPString.Length - 1);
-                return name + ServicePack + " (" + Architecture.Number + " Bit)";
+                return String.Format(TextFormat, name, ServicePack, Architecture.Number);
             }
         }
 
@@ -59,25 +65,17 @@ namespace JGCompTech.CSharp.Tools.OSInfo
             {
                 switch (Version.Number)
                 {
-                    case 51:
-                        return OSList.WindowsXP;
-
-                    case 52:
-                        return CheckIf.IsServer ? (NativeMethods.GetSystemMetrics((int)OtherConsts.SMServerR2) ? OSList.Windows2003R2 : OSList.Windows2003) : OSList.WindowsXP64;
-                    case 60:
-                        return CheckIf.IsServer ? OSList.Windows2008 : OSList.WindowsVista;
-
-                    case 61:
-                        return CheckIf.IsServer ? OSList.Windows2008R2 : OSList.Windows7;
-
-                    case 62:
-                        return CheckIf.IsServer ? OSList.Windows2012 : OSList.Windows8;
-
-                    case 63:
-                        return CheckIf.IsServer ? OSList.Windows2012R2 : OSList.Windows81;
-
-                    case 64:
-                        return CheckIf.IsServer ? OSList.Windows2016 : OSList.Windows10;
+                    case 51: return OSList.WindowsXP;
+                    case 52: return CheckIf.IsServer
+                        ? (NativeMethods.GetSystemMetrics((int)OtherConsts.SMServerR2)
+                            ? OSList.Windows2003R2
+                            : OSList.Windows2003)
+                        : OSList.WindowsXP64;
+                    case 60: return CheckIf.IsServer ? OSList.Windows2008 : OSList.WindowsVista;
+                    case 61: return CheckIf.IsServer ? OSList.Windows2008R2 : OSList.Windows7;
+                    case 62: return CheckIf.IsServer ? OSList.Windows2012 : OSList.Windows8;
+                    case 63: return CheckIf.IsServer ? OSList.Windows2012R2 : OSList.Windows81;
+                    case 64: return CheckIf.IsServer ? OSList.Windows2016 : OSList.Windows10;
                 }
                 return OSList.Windows2000AndPrevious;
             }
@@ -93,31 +91,21 @@ namespace JGCompTech.CSharp.Tools.OSInfo
             {
                 switch (Environment.OSVersion.Platform)
                 {
-                    case PlatformID.Win32Windows:
-                        {
-                            switch (Version.Minor)
-                            {
-                                case 0: return "Windows 95";
-                                case 10: return Environment.OSVersion.Version.Revision.ToString(CultureInfo.CurrentCulture) == "2222A" ? "Windows 98 Second Edition" : "Windows 98";
-                                case 90: return "Windows Me";
-                            }
-                            break;
-                        }
-
                     case PlatformID.Win32NT:
                         {
                             switch (Version.Major)
                             {
-                                case 3: return "Windows NT 3.51";
-                                case 4: return "Windows NT 4.0";
                                 case 5:
                                     {
                                         switch (Version.Minor)
                                         {
-                                            case 0: return "Windows 2000";
                                             case 1: return "Windows XP";
                                             case 2:
-                                                return CheckIf.IsServer ? (NativeMethods.GetSystemMetrics((int)OtherConsts.SMServerR2) ? "Windows Server 2003 R2" : "Windows Server 2003") : "WindowsXP x64";
+                                                return CheckIf.IsServer
+                                                    ? (NativeMethods.GetSystemMetrics((int)OtherConsts.SMServerR2)
+                                                        ? "Windows Server 2003 R2"
+                                                        : "Windows Server 2003")
+                                                    : "WindowsXP x64";
                                         }
                                         break;
                                     }
@@ -155,9 +143,9 @@ namespace JGCompTech.CSharp.Tools.OSInfo
         {
             get
             {
-                String key = "System\\ControlSet001\\Control\\ComputerName\\ActiveComputerName";
-                String value = "ComputerNameActive";
-                return RegistryInfo.getStringValue(HKEY.LOCAL_MACHINE, key, value);
+                var key = "System\\ControlSet001\\Control\\ComputerName\\ActiveComputerName";
+                var value = nameof(ComputerNameActive);
+                return getStringValue(HKEY.LOCAL_MACHINE, key, value);
             }
         }
 
@@ -168,9 +156,9 @@ namespace JGCompTech.CSharp.Tools.OSInfo
         {
             get
             {
-                String key = "System\\ControlSet001\\Control\\ComputerName\\ActiveComputerName";
-                String value = "ComputerNameActive";
-                String text = RegistryInfo.getStringValue(HKEY.LOCAL_MACHINE, key, value);
+                var key = "System\\ControlSet001\\Control\\ComputerName\\ActiveComputerName";
+                var value = nameof(ComputerNameActive);
+                var text = getStringValue(HKEY.LOCAL_MACHINE, key, value);
                 return text.Equals(ComputerNameActive) ? "N/A" : text;
             }
         }

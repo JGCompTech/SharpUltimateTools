@@ -22,14 +22,13 @@ namespace JGCompTech.CSharp.Tools.OSInfo
                 try
                 {
                     const String ComputerName = "localhost";
-                    System.Management.ManagementScope Scope;
-                    Scope = new System.Management.ManagementScope(String.Format(CultureInfo.CurrentCulture, "\\\\{0}\\root\\CIMV2", ComputerName), null);
+                    var Scope = new System.Management.ManagementScope(String.Format(CultureInfo.CurrentCulture, @"\\{0}\root\CIMV2", ComputerName), null);
 
                     Scope.Connect();
                     var Query = new System.Management.ObjectQuery("SELECT * FROM SoftwareLicensingProduct Where PartialProductKey <> null AND ApplicationId='55c92734-d682-4d71-983e-d6ec3f16059f' AND LicenseIsAddon=False");
-                    using (System.Management.ManagementObjectSearcher Searcher = new System.Management.ManagementObjectSearcher(Scope, Query))
+                    using (var Searcher = new System.Management.ManagementObjectSearcher(Scope, Query))
                     {
-                        foreach (System.Management.ManagementObject WmiObject in Searcher.Get())
+                        foreach (var WmiObject in Searcher.Get())
                         {
                             switch ((uint)WmiObject["LicenseStatus"])
                             {
@@ -86,14 +85,11 @@ namespace JGCompTech.CSharp.Tools.OSInfo
             get
             {
                 var strActivationStatus = String.Empty;
-                CommandInfo.Output results = CommandInfo.Run(@"cscript C:\Windows\System32\Slmgr.vbs /dli", true);
+                var results = CommandInfo.Run(@"cscript C:\Windows\System32\Slmgr.vbs /dli", true);
 
-                foreach (String line in results.Result)
+                foreach (var line in results.Result)
                 {
-                    if (line.Contains("License Status: "))
-                    {
-                        strActivationStatus = line.Remove(0, 16);
-                    }
+                    if (line.Contains("License Status: ")) strActivationStatus = line.Remove(0, 16);
                 }
 
                 return strActivationStatus;
@@ -187,7 +183,7 @@ namespace JGCompTech.CSharp.Tools.OSInfo
                                                    // 32-bit programs run on both 32-bit and 64-bit Windows
                                                    // Detect whether the current process is a 32-bit process running on a 64-bit system.
                 Boolean flag;
-                return ((Win32MethodExists && NativeMethods.IsWow64Process(NativeMethods.GetCurrentProcess(), out flag)) && flag);
+                return (Win32MethodExists && NativeMethods.IsWow64Process(NativeMethods.GetCurrentProcess(), out flag)) && flag;
             }
         }
 
@@ -201,7 +197,7 @@ namespace JGCompTech.CSharp.Tools.OSInfo
             {
                 var moduleHandle = NativeMethods.GetModuleHandle("kernel32.dll");
                 if (moduleHandle == IntPtr.Zero) return false;
-                return (NativeMethods.GetProcAddress(moduleHandle, "IsWow64Process") != IntPtr.Zero);
+                return NativeMethods.GetProcAddress(moduleHandle, "IsWow64Process") != IntPtr.Zero;
             }
         }
     }

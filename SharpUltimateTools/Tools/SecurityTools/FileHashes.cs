@@ -10,151 +10,69 @@ namespace JGCompTech.CSharp.Tools.SecurityTools
     public static class FileHashes
     {
         /// <summary>
-        /// Returns a SHA1 hash of the specified file.
+        /// HashType
         /// </summary>
-        /// <param name="fileName"></param>
-        public static String GetSHA1Hash(String fileName)
+        public enum HashType
         {
-            var strResult = String.Empty;
-            var strHashData = String.Empty;
-            byte[] arrbytHashValue;
-            FileStream oFileStream = null;
-            using (SHA1CryptoServiceProvider oSHAHasher = new SHA1CryptoServiceProvider())
-            {
-                try
-                {
-                    oFileStream = GetFileStream(fileName);
-                    arrbytHashValue = oSHAHasher.ComputeHash(oFileStream);
-                    oFileStream.Close();
-
-                    strHashData = BitConverter.ToString(arrbytHashValue);
-                    strHashData = strHashData.Replace("-", String.Empty);
-                    strResult = strHashData;
-                }
-                catch (Exception ex) { return ex.Message; }
-            }
-            return (strResult);
+            /// <summary>
+            /// MD5
+            /// </summary>
+            MD5,
+            /// <summary>
+            /// SHA1
+            /// </summary>
+            SHA1,
+            /// <summary>
+            /// SHA256
+            /// </summary>
+            SHA256,
+            /// <summary>
+            /// SHA384
+            /// </summary>
+            SHA384,
+            /// <summary>
+            /// SHA512
+            /// </summary>
+            SHA512
         }
 
         /// <summary>
-        /// Returns a SHA256 hash of the specified file.
-        /// </summary>
-        /// <param name="fileName"></param>
-        public static String GetSHA256Hash(String fileName)
+        /// Read the file and calculate the checksum
+        ///</summary>
+        /// <param name="type">the hash type to use</param>
+        /// <param name="fileName">the file to read</param>
+        /// <returns>the hex representation of the hash using uppercase chars</returns>
+        public static String getFileHash(HashType type, String fileName)
         {
-            var strResult = String.Empty;
-            var strHashData = String.Empty;
-
-            byte[] arrbytHashValue;
-            FileStream oFileStream = null;
-
-            using (SHA256CryptoServiceProvider oSHAHasher = new SHA256CryptoServiceProvider())
+            try
             {
-                try
+                var HashValue = new byte[0];
+
+                using (var fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                 {
-                    oFileStream = GetFileStream(fileName);
-                    arrbytHashValue = oSHAHasher.ComputeHash(oFileStream);
-                    oFileStream.Close();
-
-                    strHashData = BitConverter.ToString(arrbytHashValue);
-                    strHashData = strHashData.Replace("-", String.Empty);
-                    strResult = strHashData;
+                    switch (type)
+                    {
+                        case HashType.MD5:
+                            using (var h = new MD5CryptoServiceProvider()) { HashValue = h.ComputeHash(fileStream); }
+                            break;
+                        case HashType.SHA1:
+                            using (var h = new SHA1CryptoServiceProvider()) { HashValue = h.ComputeHash(fileStream); }
+                            break;
+                        case HashType.SHA256:
+                            using (var h = new SHA256CryptoServiceProvider()) { HashValue = h.ComputeHash(fileStream); }
+                            break;
+                        case HashType.SHA384:
+                            using (var h = new SHA384CryptoServiceProvider()) { HashValue = h.ComputeHash(fileStream); }
+                            break;
+                        case HashType.SHA512:
+                            using (var h = new SHA512CryptoServiceProvider()) { HashValue = h.ComputeHash(fileStream); }
+                            break;
+                    }
                 }
-                catch (Exception ex) { return ex.Message; }
+
+                return BitConverter.ToString(HashValue).Replace("-", String.Empty);
             }
-            return (strResult);
-        }
-
-        /// <summary>
-        /// Returns a SHA384 hash of the specified file.
-        /// </summary>
-        /// <param name="fileName"></param>
-        public static String GetSHA384Hash(String fileName)
-        {
-            var strResult = String.Empty;
-            var strHashData = String.Empty;
-
-            byte[] arrbytHashValue;
-            FileStream oFileStream = null;
-
-            using (SHA384CryptoServiceProvider oSHAHasher = new SHA384CryptoServiceProvider())
-            {
-                try
-                {
-                    oFileStream = GetFileStream(fileName);
-                    arrbytHashValue = oSHAHasher.ComputeHash(oFileStream);
-                    oFileStream.Close();
-
-                    strHashData = BitConverter.ToString(arrbytHashValue);
-                    strHashData = strHashData.Replace("-", String.Empty);
-                    strResult = strHashData;
-                }
-                catch (Exception ex) { return ex.Message; }
-            }
-            return (strResult);
-        }
-
-        /// <summary>
-        /// Returns a SHA512 hash of the specified file.
-        /// </summary>
-        /// <param name="fileName"></param>
-        public static String GetSHA512Hash(String fileName)
-        {
-            var strResult = String.Empty;
-            var strHashData = String.Empty;
-
-            byte[] arrbytHashValue;
-            FileStream oFileStream = null;
-
-            using (SHA512CryptoServiceProvider oSHAHasher = new SHA512CryptoServiceProvider())
-            {
-                try
-                {
-                    oFileStream = GetFileStream(fileName);
-                    arrbytHashValue = oSHAHasher.ComputeHash(oFileStream);
-                    oFileStream.Close();
-
-                    strHashData = BitConverter.ToString(arrbytHashValue);
-                    strHashData = strHashData.Replace("-", String.Empty);
-                    strResult = strHashData;
-                }
-                catch (Exception ex) { return ex.Message; }
-            }
-            return (strResult);
-        }
-
-        /// <summary>
-        /// Returns a MD5 hash of the specified file.
-        /// </summary>
-        /// <param name="fileName"></param>
-        public static String GetMD5Hash(String fileName)
-        {
-            var strResult = String.Empty;
-            var strHashData = String.Empty;
-
-            byte[] arrbytHashValue;
-            FileStream oFileStream = null;
-
-            using (MD5CryptoServiceProvider oMD5Hasher = new MD5CryptoServiceProvider())
-            {
-                try
-                {
-                    oFileStream = GetFileStream(fileName);
-                    arrbytHashValue = oMD5Hasher.ComputeHash(oFileStream);
-                    oFileStream.Close();
-
-                    strHashData = BitConverter.ToString(arrbytHashValue);
-                    strHashData = strHashData.Replace("-", String.Empty);
-                    strResult = strHashData;
-                }
-                catch (Exception ex) { return ex.Message; }
-            }
-            return (strResult);
-        }
-
-        internal static FileStream GetFileStream(String pathName)
-        {
-            return (new FileStream(pathName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite));
+            catch (Exception ex) { return ex.Message; }
         }
     }
 }
