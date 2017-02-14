@@ -23,4 +23,5 @@ NOTE: This program requires framework 4.5. If you need a version that runs on a 
 License
 ----
 
-**[Apache 2.0](https://github.com/JGCompTech/SharpUltimateTools/blob/master/LICENSE)**
+[![Creative Commons License](https://i.creativecommons.org/l/by/4.0/88x31.png)](http://creativecommons.org/licenses/by/4.0/)  
+This work is licensed under a [Creative Commons Attribution 4.0 International License](http://creativecommons.org/licenses/by/4.0/).
