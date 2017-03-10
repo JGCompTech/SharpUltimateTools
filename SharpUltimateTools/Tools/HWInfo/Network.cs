@@ -37,7 +37,7 @@ namespace JGCompTech.CSharp.Tools.HWInfo
         /// <returns></returns>
         public static String ExternalIPAddress(out String error)
         {
-            var IP = String.Empty;
+            var IP = "0.0.0.0";
             error = String.Empty;
             try
             {

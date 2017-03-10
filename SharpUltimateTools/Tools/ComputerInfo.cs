@@ -45,6 +45,7 @@ namespace JGCompTech.CSharp.Tools
         /// <returns></returns>
         public static HWObject ReinitializeHardware()
         {
+            var error = String.Empty;
             var Hardware = new HWObject
             {
                 SystemOEM = HWInfo.OEM.Name,
@@ -52,7 +53,7 @@ namespace JGCompTech.CSharp.Tools
                 #region BIOS
                 BIOS = new BIOSObject
                 {
-                    Name = HWInfo.BIOS.Vendor + " " + HWInfo.BIOS.Version,
+                    Name = HWInfo.BIOS.Name,
                     ReleaseDate = HWInfo.BIOS.ReleaseDate,
                     Vendor = HWInfo.BIOS.Vendor,
                     Version = HWInfo.BIOS.Version
@@ -62,31 +63,13 @@ namespace JGCompTech.CSharp.Tools
                 Network = new NetworkObject
                 {
                     ConnectionStatus = HWInfo.Network.ConnectionStatus,
-                    InternalIPAddress = HWInfo.Network.InternalIPAddress
+                    InternalIPAddress = HWInfo.Network.InternalIPAddress,
+                    ExternalIPAddress = HWInfo.Network.ExternalIPAddress(out error)
                 },
                 #endregion
-                #region Processor
-                Processor = new ProcessorObject
-                {
-                    Name = HWInfo.Processor.Name,
-                    Cores = HWInfo.Processor.Cores
-                },
-                #endregion
-                #region RAM
-                RAM = new RAMObject
-                {
-                    TotalInstalled = HWInfo.RAM.GetTotalRam
-                }
-                #endregion
+                Processor = new ProcessorObject { Name = HWInfo.Processor.Name, Cores = HWInfo.Processor.Cores },
+                RAM = new RAMObject { TotalInstalled = HWInfo.RAM.GetTotalRam }
             };
-
-            #region Network
-            var error = String.Empty;
-            var ExternalIP = HWInfo.Network.ExternalIPAddress(out error);
-
-            if (Hardware.Network.ConnectionStatus) { Hardware.Network.ExternalIPAddress = ExternalIP; }
-            else { Hardware.Network.ExternalIPAddress = "0.0.0.0"; }
-            #endregion
 
             #region Storage
             var Storage = new StorageObject();

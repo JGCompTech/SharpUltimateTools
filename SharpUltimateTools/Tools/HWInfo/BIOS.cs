@@ -9,6 +9,11 @@ namespace JGCompTech.CSharp.Tools.HWInfo
     public static class BIOS
     {
         /// <summary>
+        /// Returns the full name of the system BIOS stored in the registry.
+        /// </summary>
+        public static String Name => $"{Vendor} {Version}";
+
+        /// <summary>
         /// Returns the system BIOS release date stored in the registry.
         /// </summary>
         public static String ReleaseDate
